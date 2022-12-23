@@ -1,0 +1,23 @@
+{
+  "name": "grapesjs-client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@next/font": "13.0.7",
+    "eslint": "8.30.0",
+    "eslint-config-next": "13.0.7",
+    "grapesjs": "^0.14.57",
+    "grapesjs-preset-newsletter": "^0.2.20",
+    "grapesjs-preset-webpage": "^1.0.2",
+    "next": "13.0.7",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "framer-motion": "^6.5.1"
+  }
+}
