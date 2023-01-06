@@ -6,16 +6,19 @@ import { defaultHtml, defaultCss } from './defaultComponents';
 
 const Editor = ({ siteId }) => {
   const [newPage, setNewPage] = useState(false)
-  // const [saved, setSaved] = useState();
+  const [isSaving, setIsSaving] = useState();
   const [pageData, setPageData] = useState({ id: null, name: "", assets: "", components: "", css: "", html: "", styles: "" });
 
   useEffect(() => {
     fetch(`http://localhost:3001/sites/${siteId}`)
-      .then(response => response.json())
+      .then(response => response?.json())
       .then(data => setPageData(data))
-  }, [])
+  }, [siteId])
+
+  console.log('siteId: ', siteId)
 
   const save = () => {
+    setIsSaving(true)
     const payload = {
       id: siteId,
       name: pageData?.name,
@@ -30,9 +33,12 @@ const Editor = ({ siteId }) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     };
-    fetch('http://localhost:3001/sites/edit/3', requestOptions)
+    fetch(`http://localhost:3001/sites/edit/${siteId}`, requestOptions)
       .then(response => response.json())
-      .then(data => data );
+      .then(data => data);
+    setTimeout(() => {
+      setIsSaving(false)
+    }, 3000)
   }
 
   useEffect(() => {
@@ -69,7 +75,13 @@ const Editor = ({ siteId }) => {
 
   return (
     <div>
-      <button onClick={() => save()}>Save</button>
+      <div>
+        {!isSaving ? (
+          <button onClick={() => save()}>Save</button>
+        ) : (
+          <p style={{ margin: 0}}>Saved</p>
+        )}
+      </div>
       <div id="editor" />
     </div>
   )
