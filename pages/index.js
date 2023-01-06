@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic'
-import { defaultCss, defaultHtml } from '../components/defaultComponents';
 
 const Editor = dynamic(() => import('../components/Editor'), { ssr: false })
 
@@ -13,10 +12,6 @@ export default function Home() {
       .then(response => response.json())
       .then(data => setSites(data))
   }, [])
-
-  useEffect(() => {
-    console.log('sites.length: ', sites?.length)
-  }, [sites])
 
   const createPage = () => {
     sites.length !== 0 && setSiteId(sites?.length + 1)
@@ -39,10 +34,6 @@ export default function Home() {
       .then(data => console.log(data));
   }
 
-  useEffect(() => {
-    console.log('sites: ', sites)
-  }, [sites])
-
   const backButton = () => {
     setSiteId(0)
     window.location.reload(false);
@@ -53,7 +44,6 @@ export default function Home() {
       <button onClick={() => createPage()}>Create Page</button>
       {!siteId ? (
         <div>
-        <p>Select Site</p>
           {sites?.map((site, index) => {
             return <button onClick={() => setSiteId(site?.id)} key={index}>{site?.name}</button>
           })}

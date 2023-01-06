@@ -9,13 +9,13 @@ const Editor = ({ siteId }) => {
   const [isSaving, setIsSaving] = useState();
   const [pageData, setPageData] = useState({ id: null, name: "", assets: "", components: "", css: "", html: "", styles: "" });
 
+  // get sites
+  // TODO: move call to index
   useEffect(() => {
     fetch(`http://localhost:3001/sites/${siteId}`)
       .then(response => response?.json())
       .then(data => setPageData(data))
   }, [siteId])
-
-  console.log('siteId: ', siteId)
 
   const save = () => {
     setIsSaving(true)
@@ -42,6 +42,7 @@ const Editor = ({ siteId }) => {
   }
 
   useEffect(() => {
+    // set editor
     let editor;
       if (!editor) {
           const editor = grapesjs?.init({
@@ -51,8 +52,6 @@ const Editor = ({ siteId }) => {
                   type: 'local',
                   stepsBeforeSave: 1,
                   contentTypeJson: true,
-                  // storeComponents: true,
-                  // storeStyles: true,
                   storeHtml: true,
                   storeCss: true,
                   credentials: 'include',
