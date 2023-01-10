@@ -6,17 +6,19 @@ const Editor = dynamic(() => import('../components/Editor'), { ssr: false })
 export default function Home() {
   const [siteId, setSiteId] = useState(0)
   const [sites, setSites] = useState([])
-
+  const [selectedSite, setSelectedSite] = useState({})
+  
+  // Fix error on create pages
   useEffect(() => {
     fetch(`http://localhost:3001/sites`)
       .then(response => response.json())
-      .then(data => setSites(data))
+      .then(data => data && setSites(data))
   }, [])
 
   const createPage = () => {
-    sites.length !== 0 && setSiteId(sites?.length + 1)
+    // sites.length !== 0 && setSiteId(sites?.length + 1)
     const defaulPageData = {
-      id: sites?.length + 1,
+      id: sites.length !== 0 && setSiteId(sites?.length + 1),
       name: "New Page",
       assets: "[]",
       components: "",
@@ -31,7 +33,7 @@ export default function Home() {
     };
     fetch('http://localhost:3001/sites/add', requestOptions)
       .then(response => response.json())
-      .then(data => console.log(data));
+      .then(data => data);
   }
 
   const backButton = () => {
@@ -51,7 +53,7 @@ export default function Home() {
       ) : (
         <div>
           <button onClick={() => backButton()}>Back</button>
-          <Editor siteId={siteId} />
+          <Editor selectedSite={selectedSite} siteId={siteId} />
         </div>
       )}
     </>

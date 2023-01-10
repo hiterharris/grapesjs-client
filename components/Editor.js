@@ -4,10 +4,13 @@ import grapesjs from 'grapesjs';
 import newsletter from 'grapesjs-preset-newsletter';
 import { defaultHtml, defaultCss } from './defaultComponents';
 
-const Editor = ({ siteId }) => {
+const Editor = ({ selectedSite, siteId }) => {
+  const [editor, setEditor] = useState(false)
   const [newPage, setNewPage] = useState(false)
   const [isSaving, setIsSaving] = useState();
   const [pageData, setPageData] = useState({ id: null, name: "", assets: "", components: "", css: "", html: "", styles: "" });
+
+  console.log('selectedSite: ', selectedSite)
 
   // get sites
   // TODO: move call to index
@@ -45,7 +48,7 @@ const Editor = ({ siteId }) => {
     // set editor
     let editor;
       if (!editor) {
-          const editor = grapesjs?.init({
+          const e = grapesjs?.init({
               container : '#editor',
               plugins: [newsletter],  
                 storageManager: {
@@ -60,17 +63,19 @@ const Editor = ({ siteId }) => {
                   },
                 },
           });
-
-          // set default page components
-          if (newPage) {
-            editor.setComponents(defaultHtml);
-            editor.setStyle(defaultCss);
-          } else {
-            editor.setComponents(pageData?.html);
-            editor.setStyle(pageData?.css);
-          }
+          setEditor(e)
+          return editor;
       }
   }, [pageData])
+
+  // set default page components
+  // if (!siteId) {
+  //   editor.setComponents(defaultHtml);
+  //   editor.setStyle(defaultCss);
+  // } else {
+  //   editor.setComponents(pageData?.html);
+  //   editor.setStyle(pageData?.css);
+  // }
 
   return (
     <div>
